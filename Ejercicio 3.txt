@@ -1,0 +1,161 @@
+#Carga de la base de datos
+Veg<-read.table(file="https://raw.githubusercontent.com/Emax1/R/master/Vegetation2.txt",T)
+
+#En este archivo hemos indicado que las observaciones están separados por ";" 
+#Aplicamos stringAsFactor
+dt<-read.csv("https://raw.githubusercontent.com/Emax1/R/master/Ejemplo_01.csv",sep=';',stringsAsFactors=TRUE)
+dt
+
+#Dimensiones de la base de datos
+dim(Veg)
+
+#Nombres de las variables en a base de datos
+names(Veg)
+
+#Estructura de la matriz
+str(Veg)
+
+#Se tienen 8 transectos y se aplica la media (mean) a cada uno de ellos por la variable R
+#Tabla de Veg$Transect
+table(Veg$Transect)
+
+#Media general de R
+m<-mean(Veg$R)
+m
+
+#Media de R por cada transecto
+#X - es el vector al cual se le buscan las medias
+#INDEX - la variable por la que se agrupan las medias
+#FUN - la  función que se utiliza para aplicar
+tapply(X=Veg$R,INDEX=Veg$Transect,FUN=mean)
+
+Aplicamos la función al cálculo de la mediana
+tapply(X=Veg$R,INDEX=Veg$Transect,FUN=median)
+
+#Aplicamos la función al cálculo de las desviaciones estándar
+tapply(X=Veg$R,INDEX=Veg$Transect,FUN=sd)
+
+#Aplicamos la función al cálculo de la varianzas
+tapply(X=Veg$R,INDEX=Veg$Transect,FUN=var)
+
+#Aplicamos la función al cálculo del máximo
+tapply(X=Veg$R,INDEX=Veg$Transect,FUN=max)
+
+#Aplicamos la función al cálculo de la mínimo
+tapply(X=Veg$R,INDEX=Veg$Transect,FUN=min)
+
+#Llamamos a una librería, estas tienen un conjunto de funciones
+#Si no se carga al llamar se debe antes instalar (una sola vez)
+#install.packages("Hmisc")
+#La librería (Hmisc) contiene funciones para análisis descriptivos
+#Llamamos la librería (una sola vez)
+#library(Hmisc)
+#Buscamos en ella la función "describe" para el análisis descriptivo de la variable R
+describe(Veg$R)
+
+#El comando "summary" da información básica de variables
+Veg[,c("ROCK","LITTER","R")]
+
+Veg[c(1,2,3,7,5,8),c("ROCK","LITTER","R")]
+
+#Vemos un resumen de la base de datos
+summary(Veg[,c("ROCK","LITTER","R")])
+
+
+
+Instalamos una nueva librería "ratle" para examinar bases de datos
+
+#install.packages("rattle")
+library(rattle)
+
+#Hemos llamado la librería para cargar la base de datos "Weather"
+weather
+
+#Dimensiones
+dim(weather)
+
+#Hacemos una descripción de la variable N°6 en la base de datos
+describe(weather[6])
+
+
+
+hist(weather[6])
+
+#El resumen de la variable N°6 - Evaporación
+summary(weather[6])
+
+#También se puede usar el nombre de la variable en comillas
+summary(weather["Evaporation"])
+
+#Examinamos la variable "Localidad"
+describe(weather["Location"])
+hist(weather["Location"])
+summary(weather["Location"])
+
+describe(weather["WindGustDir"])
+#Gráfico de frecuencias
+hist(weather["WindGustDir"])
+summary(weather["WindGustDir"])
+
+#Tabla con los datos de la variable "WinGustDir"
+table(weather["WindGustDir"])
+
+#Gráfico de pastel de los datos en la variable "WindGustDir"
+pie(table(weather["WindGustDir"]))
+
+#Gráfico de barras
+barplot(table(weather["WindGustDir"]))
+
+Instalamos la librería "fBasics"
+
+
+
+#install.packages("fBasics")
+#library(fBasics)
+basicStats(weather$Sunshine)
+#La función basicStats también nos da estadísticos de una variable determinada
+
+hist(weather$Sunshine)
+#En este caso observamos una asimetría negativa (Sesgo hacia la izquierda)
+
+skewness(weather[,c(7,9,12,13)])
+
+skewness(na.omit(weather[,c(7,9,12,13)]))
+
+kewness(na.omit(weather$Sunshine))
+
+summary(weather)
+
+#Instalamos la librería "mice"
+#install.packages("mice")
+#Llamamos la librería (mice)
+#library(mice)
+#Aplicamos la función
+md.pattern(weather[,7:12])
+
+#La Fnción "md.pattern" nos permite visualizar los valores perdidos de una variable
+md.pattern(weather[c(7,8,9,10,11,12)])
+
+#Exaimnamos la variable "RainTomorrow"
+#Identificamos los nombres
+names(weather)
+
+#Hacemos un gráfico de cajas y bigotes
+boxplot(weather$Humidity3pm,horizontal=TRUE)	
+
+#Hacemos un gráfico de cajas y bigotes
+boxplot(weather$Humidity3pm,horizontal=FALSE)
+
+#Revisamos las variables "Humedad" y "Lluvias"
+h<-boxplot(weather$Humidity3pm~weather$RainTomorrow)
+
+#Examinamos una nueva librería para gráficos
+#library(Hmisc)
+h3<-weather$Humidity3pm
+hn<-h3[weather$RainTomorrow=="No"]
+hy<-h3[weather$RainTomorrow=="Yes"]	
+
+ds<-list(h3,hn,hy)
+
+bpplot(ds)
+

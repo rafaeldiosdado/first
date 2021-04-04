@@ -1,0 +1,8 @@
+datos_catet<-read.delim("clipboard",T)
+head(datos_catet)
+dim(datos_catet)
+names(datos_catet)
+str(datos_catet)
+summary(datos_catet)
+datos_angiocer<-read.delim("clipboard",T)
+summary(datos_angiocer)
