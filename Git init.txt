@@ -5,3 +5,7 @@
  git status
 
  git add *
+
+ git config --global user.email "diosdadoz@yahoo.es"
+
+ git commit -m "Primera carga de archivos"
